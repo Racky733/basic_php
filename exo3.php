@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "fonctions.php";
 ?>
 
 <form method="post">
@@ -25,24 +26,20 @@ if (isset($_POST['ajouter'])) {
 
     if ($produit == "" || $prix == "" || $quantite == "") {
         $message = "Tous les champs sont obligatoires.";
-    }elseif (is_numeric($produit)) {
-        echo "Le nom du produit ne doit pas être un nombre.";
-    }else {
-        $_SESSION['panier'][] = [
-            'produit'  => $produit,
-            'prix'     => $prix,
-            'quantite' => $quantite
-        ];
+    } elseif (is_numeric($produit)) {
+        $message = "Le nom du produit ne doit pas être un nombre.";
+    } else {
+        ajouterProduit($produit, $prix, $quantite);
     }
 }
 
 if (isset($_POST['vider'])) {
-    $_SESSION['panier'] = [];
+    viderPanier();
 }
 
 if (isset($_POST['quitter'])) {
-session_destroy();
-    $_SESSION['panier'] = [];
+    session_destroy();
+    viderPanier();
     $message = "Vous avez quitté. Session terminée.";
 }
 ?>
@@ -58,18 +55,15 @@ session_destroy();
   </tr>
 
   <?php
-  $total = 0;
   foreach ($_SESSION['panier'] as $p) {
-      $sous = $p['prix'] * $p['quantite'];
-      $total = $total + $sous;
       echo "<tr>";
       echo "<td>" . $p['produit'] . "</td>";
       echo "<td>" . $p['prix'] . "</td>";
       echo "<td>" . $p['quantite'] . "</td>";
-      echo "<td>" . $sous . "</td>";
+      echo "<td>" . sousTotal($p['prix'], $p['quantite']) . "</td>";
       echo "</tr>";
   }
   ?>
 </table>
 
-<p>Total : <?php echo $total; ?> FCFA</p>
+<p>Total : <?php echo totalPanier($_SESSION['panier']); ?> FCFA</p>

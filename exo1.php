@@ -1,64 +1,16 @@
 <?php
-$notes = [12, 15, 8, 17, 10, 14];
+require_once "fonctions.php";
 
-function moyenne($notes){
-    $somme = 0;
-    $nb = 0;
-
-    foreach ($notes as $n){
-        $somme += $n;
-        $nb++;
-    }
-    return $somme / $nb ;
+$taille = rand(5, 10);
+$notes = [];
+for ($i = 0; $i < $taille; $i++) {
+    $notes[] = rand(10, 30);
 }
 
-function noteMax($notes){
-    $max = $notes[0];
-    foreach ($notes as $n) {
-        if ($n > $max){
-            $max = $n;   
-        }
-    }
-    return $max;
-}
-
-function noteMin($notes){
-    $min = $notes[0];
-    foreach ($notes as $n) {
-        if ($n < $min){
-            $min = $n;   
-        }
-    }
-    return $min;
-}
-
-function admis($moyenne) {
-    if ($moyenne >= 10){
-        return "Admis";
-    }else{
-        return "Ajourné";
-    }
-}
-
-echo "Notes : ";
-foreach ($notes as $n) {
-    echo $n . " ";
-}
-
-echo "<br>";
+echo "Notes : " . implode(" ", $notes) . "<br>";
 
 $m = moyenne($notes);
-
-echo "Moyenne : " . $m . "<br>";
-
+echo "Moyenne : " . round($m, 2) . "<br>";
 echo "Note max : " . noteMax($notes) . "<br>";
-
 echo "Note min : " . noteMin($notes) . "<br>";
-
 echo "Décision : " . admis($m);
-
-?>
-
-    
-
-
